@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -34,13 +35,21 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
+        $userid = bin2hex(random_bytes(64));
         $user = User::create([
+            'id' => $userid,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
+        Profile::create([
+            'id' => bin2hex(random_bytes(64)),
+            'user_id' => $userid,
+            'profile_image' => '/storage/profile.jpg',
+            'cover_image' => '/storage/cover.jpg',
+            'is_online' => true,
+            'last_logged_in' => now(),
+        ]);
         event(new Registered($user));
 
         Auth::login($user);
