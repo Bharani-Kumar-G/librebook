@@ -12,7 +12,7 @@
                     <div class="row justify-center" id="cover_img_div">
                         <img src="{{ $user->profile->cover_image }}">
                         <div class="row justify-center">
-                            <div class="col-2 flex justify-center"><a href="/profile/{{ $user->id }}"><img class="rounded-full" style="width: 150px" src="{{ asset($user->profile->profile_image ?? "storage/profile.jpg") }}" alt=""></a></div>
+                            <div id="profile_image" class="col-2 -mt-[115px] flex justify-center"><img class="rounded-full" style="width: 150px" src="{{ asset($user->profile->profile_image ?? "storage/profile.jpg") }}" alt=""></div>
                             <div class="col-4 flex justify-center">
                                 <div class="text-center">@if(auth()->user()->id !== $user->id)</div>
                                 <a href="/message/{{ $user->id }}"><button>Message</button></a>
@@ -33,4 +33,5 @@
             </div>
         </div>
     </div>
+    <x-profile-image-cropper />
 </x-app-layout>
